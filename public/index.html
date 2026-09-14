@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>北海道 市町村別人口推移 WebGIS (1920-2020)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header id="app-header">
+    <h1>北海道 市町村別人口推移</h1>
+    <p class="subtitle">大正9年(1920年)&nbsp;→&nbsp;令和2年(2020年)・国勢調査ベース</p>
+  </header>
+
+  <div id="map"></div>
+
+  <div id="total-panel">
+    <div class="total-year"><span id="total-year-number">1920</span><span class="total-year-unit">年</span></div>
+    <div class="total-label">北海道 総人口(179市町村計)</div>
+    <div class="total-number" id="total-number">-</div>
+    <svg id="total-spark" class="spark" viewBox="0 0 240 52" preserveAspectRatio="none">
+      <g class="spark-era-areas"></g>
+      <path class="spark-line"></path>
+      <line class="spark-cursor" y1="0" y2="52"></line>
+      <circle class="spark-dot" r="3"></circle>
+    </svg>
+  </div>
+
+  <div id="legend">
+    <div class="legend-title">人口(人・対数スケール)</div>
+    <div id="legend-scale"></div>
+  </div>
+
+  <div id="info-panels"></div>
+
+  <template id="info-panel-template">
+    <div class="info-panel">
+      <button class="info-close" aria-label="閉じる">×</button>
+      <div class="info-name">-</div>
+      <div class="info-stats-row">
+        <span class="info-population">-</span>
+        <span class="info-diff">-</span>
+      </div>
+      <div class="info-meta-row">
+        <span class="info-type">-</span>
+        <span class="info-peak">-</span>
+      </div>
+      <svg class="spark" viewBox="0 0 240 52" preserveAspectRatio="none">
+        <path class="spark-area"></path>
+        <path class="spark-line"></path>
+        <line class="spark-cursor" y1="0" y2="52"></line>
+        <circle class="spark-dot" r="3"></circle>
+      </svg>
+    </div>
+  </template>
+
+  <div id="controls">
+    <div class="controls-row">
+      <div id="year-display"><span id="year-number">1920</span><span class="year-unit">年</span></div>
+
+      <button id="play-btn" aria-label="再生">▶</button>
+
+      <select id="speed-select" aria-label="再生速度">
+        <option value="auto" selected>おすすめ(緩急自動)</option>
+        <option value="0.5">0.5年/秒(じっくり)</option>
+        <option value="1">1年/秒</option>
+        <option value="2">2年/秒</option>
+        <option value="4">4年/秒(速い)</option>
+      </select>
+
+      <select id="mode-select" aria-label="色分けの指標">
+        <option value="population">人口</option>
+        <option value="diff" selected>前年比増減</option>
+        <option value="peakRatio">ピーク比(衰退度)</option>
+      </select>
+    </div>
+
+    <div id="timeline-wrap">
+      <div id="era-captions"></div>
+      <div id="era-band"></div>
+      <input id="year-slider" type="range" min="1920" max="2020" step="1" value="1920" aria-label="表示年" />
+    </div>
+  </div>
+
+  <div id="ranking-panel">
+    <div class="ranking-title">人口減少ワースト</div>
+    <div class="ranking-subtitle">小規模×減少ペースが深刻な市町村</div>
+    <ol id="ranking-list"></ol>
+  </div>
+
+  <div id="footer-note">
+    出典: 北海道庁「北海道現住人口」大正9年〜令和2年(国勢調査、現市町村単位に組み替え)。
+    国勢調査非実施年は前後の観測値の線形補間値。境界: 国土交通省 国土数値情報(行政区域データ、2024年)。
+    北方領土関連区域は人口統計が存在しないためグレー表示(データなし)。
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
