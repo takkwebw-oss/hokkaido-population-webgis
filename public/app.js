@@ -481,7 +481,9 @@ async function main() {
 
     initInteraction();
     applyColorMode();
-    openDefaultPanels();
+    // スマホでは詳細パネルが画面の大半を占めて地図が見えなくなるため、
+    // 起動時の自動オープンはPC/タブレット幅のみに限定する(タップしての表示は可能なまま)。
+    if (!window.matchMedia("(max-width: 640px)").matches) openDefaultPanels();
     updateYear(state.year);
   });
 
